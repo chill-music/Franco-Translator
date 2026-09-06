@@ -233,7 +233,7 @@ export const arToFrancoDict = {
   "كلم":"kallem","كلمني":"kallimni",
   "يقدر":"ye2dar","بيقدر":"byeqdar","قدر":"2ader","قدرت":"2adart",
   "مش هقدر":"mesh ha2dar",
-  "قل":"2ol","قلت":"2olt","قلتي":"2oltي",
+  "قل":"2ol","قلت":"2olt","قلتي":"2olti",
   "يقول":"ye2ol","بيقول":"bye2ol",
   "جاب":"gab","جبت":"gabt","يجيب":"yegib","بيجيب":"byegib",
   "خد":"5ad","خدت":"5adt","يخد":"ye5od","بيخد":"bye5od","بخد":"ba5od",
@@ -330,6 +330,7 @@ export const francoToArMap = [
   [/6/, "ط"],
   [/7/, "ح"],
   [/9/, "ص"],
+  [/8/, "غ"],  // 8 = Ghayn (less common Franco variant; see Guide),
   [/3/, "ع"],
   [/2/, "ق"],  // In Egyptian Franco, 2 primarily represents ق
   [/g/, "ج"],

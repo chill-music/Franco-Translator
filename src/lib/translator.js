@@ -167,6 +167,8 @@ function processRemainingFranco(text) {
     if (/[\u0600-\u06FF]/.test(token)) return token; // Already Arabic
     const lower = token.toLowerCase().replace(/[^a-z0-9']/g, "");
     if (!lower) return token;
+    // Pure digit runs are literal numbers (phone numbers, quantities), not Franco words
+    if (/^[0-9]+$/.test(lower)) return token;
     // Dictionary lookup
     if (francoToArDict[lower]) return francoToArDict[lower];
     // Character mapping for unknown words
