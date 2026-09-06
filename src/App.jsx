@@ -235,6 +235,9 @@ function App() {
             <span className="brand-title">{t(uiLang, "appTitle")}</span>
           </div>
           <div className="navbar-actions">
+            <a className="btn-icon guide-btn" href="learn.html">
+              {t(uiLang, "learnNav")}
+            </a>
             <button className="btn-icon guide-btn" onClick={() => setShowGuide(true)}>
               {t(uiLang, "btnGuide")}
             </button>
@@ -395,6 +398,10 @@ function App() {
         {t(uiLang, "footer")} | FrancoAr v2.0 ·{" "}
         <a href="privacy-policy.html" style={{ color: "var(--accent-secondary)" }}>
           Privacy Policy
+        </a>
+        {" · "}
+        <a href="learn.html" style={{ color: "var(--accent-secondary)" }}>
+          {t(uiLang, "learnNav")}
         </a>
       </footer>
 
