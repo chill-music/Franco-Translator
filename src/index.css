@@ -563,3 +563,20 @@ button:focus-visible {
 @media (min-width: 641px) {
   .desktop-only { display: flex; }
 }
+
+/* ─── Download App Section ─── */
+.download-section { max-width: 760px; margin: 36px auto 0; padding: 0 16px; }
+.download-card {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: 14px; padding: 22px 24px;
+  box-shadow: 0 0 24px var(--shadow-glow);
+}
+.dl-icon { color: var(--accent-secondary); display: flex; }
+.dl-text { flex: 1 1 220px; }
+.dl-title { font-size: 19px; font-weight: 700; margin-bottom: 4px; color: var(--text-primary); }
+.dl-desc { font-size: 14px; color: var(--text-secondary); }
+.dl-action { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.dl-btn { text-decoration: none; display: inline-flex; align-items: center; }
+.dl-size { font-size: 12px; color: var(--text-secondary); }
+.dl-note { text-align: center; font-size: 12.5px; color: var(--text-secondary); margin-top: 10px; }

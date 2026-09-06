@@ -17,7 +17,7 @@ import { useTranslation } from "./hooks/useTranslation";
 import { TranslatorPanel } from "./components/TranslatorPanel";
 import { GuidePanel } from "./components/GuidePanel";
 import { HistoryPanel } from "./components/HistoryPanel";
-import { SunIcon, MoonIcon, SwapIcon } from "./components/Icons";
+import { SunIcon, MoonIcon, SwapIcon, AndroidIcon } from "./components/Icons";
 import "./index.css";
 
 function App() {
@@ -234,6 +234,31 @@ function App() {
           uiLang={uiLang}
         />
       </main>
+
+      {/* ── Get the App (Android APK) ── */}
+      <section className="download-section">
+        <div className="download-card">
+          <div className="dl-icon" aria-hidden="true">
+            <AndroidIcon size={44} />
+          </div>
+          <div className="dl-text">
+            <h2 className="dl-title">{t(uiLang, "dlTitle")}</h2>
+            <p className="dl-desc">{t(uiLang, "dlDesc")}</p>
+          </div>
+          <div className="dl-action">
+            <a
+              className="btn-primary dl-btn"
+              href="downloads/FrancoAr.apk"
+              download
+              aria-label={t(uiLang, "dlBtn")}
+            >
+              {t(uiLang, "dlBtn")}
+            </a>
+            <span className="dl-size">{t(uiLang, "dlSize")}</span>
+          </div>
+        </div>
+        <p className="dl-note">{t(uiLang, "dlNote")}</p>
+      </section>
 
       {/* ── Features ── */}
       <section className="features-section">
