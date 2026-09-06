@@ -5,7 +5,7 @@
  * per Phase 3 architecture requirements.
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { t } from "./lib/i18n";
 import { getValidatedLang } from "./lib/storage";
 import { safeSetItem } from "./lib/storage";
@@ -94,6 +94,92 @@ function App() {
       showToast("Please allow clipboard access");
     }
   }, [uiLang, showToast, setInputText, setDirection]);
+
+  // ── Voice (Arabic side only) ──
+  const [listening, setListening] = useState(false);
+  const [speakingPanel, setSpeakingPanel] = useState(null); // "input" | "output" | null
+  const recognitionRef = useRef(null);
+  const [arVoice, setArVoice] = useState(null);
+
+  const ttsSupported = typeof window !== "undefined" && "speechSynthesis" in window;
+  const speechSupported =
+    typeof window !== "undefined" &&
+    ("SpeechRecognition" in window || "webkitSpeechRecognition" in window);
+
+  useEffect(() => {
+    if (!ttsSupported) return undefined;
+    const load = () => {
+      const voice = window.speechSynthesis
+        .getVoices()
+        .find((v) => v.lang.toLowerCase().startsWith("ar"));
+      if (voice) setArVoice(voice);
+    };
+    load();
+    window.speechSynthesis.addEventListener("voiceschanged", load);
+    return () => {
+      window.speechSynthesis.removeEventListener("voiceschanged", load);
+      window.speechSynthesis.cancel();
+    };
+  }, [ttsSupported]);
+
+  const startListening = useCallback(() => {
+    if (listening || !speechSupported) return;
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = new SR();
+    rec.lang = "ar-EG";
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    rec.onresult = (event) => {
+      const transcript = event.results[event.results.length - 1][0].transcript.trim();
+      if (transcript) setInputText(transcript); // existing debounce effect translates it
+    };
+    rec.onerror = (event) => {
+      if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+        showToast(t(uiLang, "errMicPerm"));
+      } else if (event.error === "no-speech" || event.error === "network") {
+        showToast(t(uiLang, "errNoSpeech"));
+      }
+    };
+    rec.onend = () => setListening(false);
+    recognitionRef.current = rec;
+    try {
+      rec.start();
+      setListening(true);
+    } catch {
+      setListening(false);
+    }
+  }, [listening, speechSupported, setInputText, showToast, t, uiLang]);
+
+  const stopListening = useCallback(() => {
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch {
+        /* already stopped */
+      }
+    }
+    setListening(false);
+  }, []);
+
+  const handleSpeak = useCallback(
+    (panel, text) => {
+      if (!ttsSupported || !text) return;
+      if (speakingPanel === panel) {
+        window.speechSynthesis.cancel();
+        setSpeakingPanel(null);
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "ar-EG";
+      if (arVoice) utterance.voice = arVoice;
+      utterance.onend = () => setSpeakingPanel((cur) => (cur === panel ? null : cur));
+      utterance.onerror = () => setSpeakingPanel((cur) => (cur === panel ? null : cur));
+      window.speechSynthesis.speak(utterance);
+      setSpeakingPanel(panel);
+    },
+    [ttsSupported, speakingPanel, arVoice]
+  );
 
   // ── Translate + save ──
   const onTranslate = useCallback(() => {
@@ -194,6 +280,20 @@ function App() {
             onCopy={() => handleCopy(inputText)}
             onPaste={() => handlePaste(false)}
             onClear={handleClear}
+            onMic={
+              speechSupported && direction !== DIRECTIONS.F2A
+                ? listening
+                  ? stopListening
+                  : startListening
+                : undefined
+            }
+            micActive={listening}
+            onSpeak={
+              ttsSupported && arVoice && inputIsArabic && inputText.trim()
+                ? () => handleSpeak("input", inputText)
+                : undefined
+            }
+            speakActive={speakingPanel === "input"}
             uiLang={uiLang}
           />
 
@@ -213,6 +313,12 @@ function App() {
             confidenceLabel={confidenceLabel}
             onCopy={() => handleCopy(outputText)}
             onPaste={() => handlePaste(true)}
+            onSpeak={
+              ttsSupported && arVoice && outputIsArabic && outputText.trim()
+                ? () => handleSpeak("output", outputText)
+                : undefined
+            }
+            speakActive={speakingPanel === "output"}
             uiLang={uiLang}
           />
         </div>

@@ -5,6 +5,7 @@
 
 import { t } from "../lib/i18n";
 import { CONFIDENCE_HIGH, CONFIDENCE_MEDIUM } from "../lib/constants";
+import { MicIcon, SpeakerIcon } from "./Icons";
 
 export function TranslatorPanel({
   label,
@@ -18,6 +19,10 @@ export function TranslatorPanel({
   onCopy,
   onPaste,
   onClear,
+  onMic,
+  micActive = false,
+  onSpeak,
+  speakActive = false,
   uiLang,
 }) {
   const wordCount = value.trim() ? value.trim().split(/\s+/).length : 0;
@@ -43,6 +48,26 @@ export function TranslatorPanel({
           )}
         </div>
         <div className="box-header-actions">
+          {onMic && (
+            <button
+              className={"btn-icon voice-btn" + (micActive ? " listening" : "")}
+              onClick={onMic}
+              title={t(uiLang, micActive ? "listening" : "micTip")}
+              aria-label={t(uiLang, micActive ? "listening" : "micTip")}
+            >
+              <MicIcon size={16} />
+            </button>
+          )}
+          {onSpeak && (
+            <button
+              className={"btn-icon voice-btn" + (speakActive ? " speaking" : "")}
+              onClick={onSpeak}
+              title={t(uiLang, speakActive ? "stopTip" : "speakerTip")}
+              aria-label={t(uiLang, speakActive ? "stopTip" : "speakerTip")}
+            >
+              <SpeakerIcon size={16} />
+            </button>
+          )}
           <button className="btn-icon" onClick={onCopy} title={t(uiLang, "btnCopy")}>
             {t(uiLang, "btnCopy")}
           </button>
