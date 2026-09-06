@@ -72,5 +72,19 @@
       "text": "text",
       "url": "url"
     }
-  }
+  },
+  "screenshots": [
+    {
+      "src": "screenshots/home-1.png",
+      "sizes": "378x814",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "screenshots/home-2.png",
+      "sizes": "374x811",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
 }
