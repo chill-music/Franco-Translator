@@ -9,9 +9,9 @@ import { useState, useEffect, useRef, useCallback, startTransition } from "react
 import { doTranslate, getConfidence, isArabic, getConfidenceLabel } from "../lib/translator";
 import { DIRECTIONS, DEBOUNCE_MS } from "../lib/constants";
 
-export function useTranslation(uiLang, t) {
-  const [direction, setDirection] = useState(DIRECTIONS.AUTO);
-  const [inputText, setInputText] = useState("");
+export function useTranslation(uiLang, t, initialDirection = DIRECTIONS.AUTO, initialInput = "") {
+  const [direction, setDirection] = useState(initialDirection);
+  const [inputText, setInputText] = useState(initialInput);
   const [outputText, setOutputText] = useState("");
   const [detectedLabel, setDetectedLabel] = useState("");
   const [confidence, setConfidence] = useState(0);

@@ -1,6 +1,16 @@
-/* FrancoAr service worker — minimal offline-capable app shell. */
-const CACHE_NAME = "francoar-v1";
-const PRECACHE = ["./", "./favicon.svg", "./manifest.webmanifest"];
+/* FrancoAr service worker — offline-capable app shell (v2). */
+const CACHE_NAME = "francoar-v2";
+const PRECACHE = [
+  "./",
+  "./favicon.svg",
+  "./manifest.webmanifest",
+  "./privacy-policy.html",
+  "./apple-touch-icon.png",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png",
+  "./icons/icon-192-maskable.png",
+  "./icons/icon-512-maskable.png"
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -25,8 +35,6 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
-  const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return;
 
   if (request.mode === "navigate") {
     // App shell: network first, cached page when offline.
@@ -34,12 +42,12 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Static assets: cache-first, then network (result is cached for next time).
+  // Static assets + Google Fonts (cross-origin): cache-first, then network.
   event.respondWith(
-    caches.match(request).then((cached) => {
+    caches.match(request, { ignoreVary: true }).then((cached) => {
       if (cached) return cached;
       return fetch(request).then((response) => {
-        if (response.ok) {
+        if (response.ok || response.type === "opaque") {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
         }

@@ -9,7 +9,7 @@ import { useState, useEffect, useCallback } from "react";
 import { t } from "./lib/i18n";
 import { getValidatedLang } from "./lib/storage";
 import { safeSetItem } from "./lib/storage";
-import { DIRECTIONS, TOAST_DURATION_MS } from "./lib/constants";
+import { DIRECTIONS, TOAST_DURATION_MS, VALID_LANGS } from "./lib/constants";
 import { isArabic } from "./lib/translator";
 import { useTheme } from "./hooks/useTheme";
 import { useHistory } from "./hooks/useHistory";
@@ -21,11 +21,23 @@ import { SunIcon, MoonIcon, SwapIcon } from "./components/Icons";
 import "./index.css";
 
 function App() {
+  // ── URL params: shortcuts (?dir=), share_target (?text=), lang links (?lang=) ──
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramLang = urlParams.get("lang");
+  const paramDir = urlParams.get("dir");
+  const sharedText = urlParams.get("text") || urlParams.get("title") || "";
+  const initialDirection =
+    paramDir === "f2a" ? DIRECTIONS.F2A :
+    paramDir === "a2f" ? DIRECTIONS.A2F :
+    DIRECTIONS.AUTO;
+
   // ── Theme ──
   const { theme, toggleTheme } = useTheme();
 
   // ── Language ──
-  const [uiLang, setUiLang] = useState(getValidatedLang);
+  const [uiLang, setUiLang] = useState(
+    VALID_LANGS.includes(paramLang) ? paramLang : getValidatedLang()
+  );
 
   useEffect(() => {
     safeSetItem("franco-lang", uiLang);
@@ -45,7 +57,7 @@ function App() {
     inputLabel, outputLabel, inputPlaceholder,
     inputIsArabic, outputIsArabic,
     handleSwap, handleTranslate, handleClear,
-  } = useTranslation(uiLang, t);
+  } = useTranslation(uiLang, t, initialDirection, sharedText);
 
   // ── History ──
   const { history, addToHistory, clearHistory } = useHistory();
@@ -249,7 +261,10 @@ function App() {
 
       {/* ── Footer ── */}
       <footer className="app-footer">
-        {t(uiLang, "footer")} | FrancoAr v2.0
+        {t(uiLang, "footer")} | FrancoAr v2.0 ·{" "}
+        <a href="privacy-policy.html" style={{ color: "var(--accent-secondary)" }}>
+          Privacy Policy
+        </a>
       </footer>
 
       {/* ── Guide Panel (overlay) ── */}
