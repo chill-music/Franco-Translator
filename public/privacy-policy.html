@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,6 @@
     :root {
       --bg-primary: #0f1117;
       --bg-secondary: #1a1d27;
-      --bg-tertiary: #252836;
       --accent-primary: #6c63ff;
       --accent-secondary: #4ecdc4;
       --text-primary: #f0f0f5;
@@ -22,19 +21,26 @@
       --border-color: #2d3048;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    [hidden] { display: none !important; }
     body {
       background: var(--bg-primary);
       color: var(--text-primary);
-      font-family: "Inter", "Cairo", system-ui, sans-serif;
+      font-family: "Inter", system-ui, sans-serif;
       line-height: 1.7;
       padding: 40px 16px;
+      min-height: 100vh;
     }
+    html[lang="ar"] body { font-family: "Cairo", system-ui, sans-serif; }
     .container { max-width: 760px; margin: 0 auto; }
-    .back-link {
-      display: inline-block; margin-bottom: 24px;
-      color: var(--accent-secondary); text-decoration: none; font-weight: 600;
-    }
+    .top-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    .back-link { color: var(--accent-secondary); text-decoration: none; font-weight: 600; }
     .back-link:hover { text-decoration: underline; }
+    .lang-toggle {
+      background: var(--bg-secondary); color: var(--accent-secondary);
+      border: 1px solid var(--border-color); border-radius: 8px;
+      font: inherit; font-weight: 600; padding: 6px 14px; cursor: pointer;
+    }
+    .lang-toggle:hover { border-color: var(--accent-secondary); }
     h1 { font-size: 28px; margin-bottom: 8px; color: var(--accent-primary); }
     .updated { color: var(--text-secondary); font-size: 14px; margin-bottom: 32px; }
     .card {
@@ -48,80 +54,145 @@
     p, li { color: var(--text-primary); font-size: 15px; }
     ul { padding-inline-start: 22px; margin-top: 8px; }
     li { margin-bottom: 6px; }
-    .ar { font-family: "Cairo", sans-serif; direction: rtl; text-align: right; }
     footer { text-align: center; color: var(--text-secondary); font-size: 13px; margin-top: 32px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <a class="back-link" href="./">&larr; Back to FrancoAr</a>
-    <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: September 6, 2026</p>
-
-    <div class="card">
-      <h2>What FrancoAr is</h2>
-      <p>
-        FrancoAr is a free translator between Egyptian Arabic script and Franco-Arabic
-        (Arabizi). It runs entirely in your browser — there is no account, no sign-up,
-        and no server involved in translation.
-      </p>
+    <div class="top-row">
+      <a class="back-link" href="./">&larr; <span data-i18n="back">Back to FrancoAr</span></a>
+      <button class="lang-toggle" id="langToggle" type="button">عربي</button>
     </div>
 
-    <div class="card">
-      <h2>Data collection</h2>
-      <p><strong>We do not collect, transmit, or store any of your data on a server.</strong></p>
-      <ul>
-        <li><strong>Your text never leaves your device.</strong> All translation is performed locally, client-side, in your browser.</li>
-        <li><strong>Local preferences:</strong> your theme (dark/light), interface language, and recent translation history are saved in your browser's localStorage, on your device only. This data is never sent anywhere and you can erase it anytime via "Clear History" or your browser settings.</li>
-        <li><strong>No analytics:</strong> we use no analytics, tracking, or advertising services.</li>
-        <li><strong>No data sharing:</strong> we do not share, sell, or transfer any information to third parties.</li>
-        <li><strong>Clipboard:</strong> the app reads or writes your clipboard only when you press the Copy or Paste buttons.</li>
-      </ul>
+    <!-- ═══ English ═══ -->
+    <div data-lang-block="en">
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last updated: September 6, 2026</p>
+
+      <div class="card">
+        <h2>What FrancoAr is</h2>
+        <p>FrancoAr is a free translator between Egyptian Arabic script and Franco-Arabic (Arabizi). It runs entirely in your browser — there is no account, no sign-up, and no server involved in translation.</p>
+      </div>
+
+      <div class="card">
+        <h2>Data collection</h2>
+        <p><strong>We do not collect, transmit, or store any of your data on a server.</strong></p>
+        <ul>
+          <li><strong>Your text never leaves your device.</strong> All translation is performed locally, client-side, in your browser.</li>
+          <li><strong>Local preferences:</strong> your theme (dark/light), interface language, and recent translation history are saved in your browser's localStorage, on your device only. This data is never sent anywhere and you can erase it anytime via "Clear History" or your browser settings.</li>
+          <li><strong>No analytics:</strong> we use no analytics, tracking, or advertising services.</li>
+          <li><strong>No data sharing:</strong> we do not share, sell, or transfer any information to third parties.</li>
+          <li><strong>Clipboard:</strong> the app reads or writes your clipboard only when you press the Copy or Paste buttons.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Third-party services</h2>
+        <p>The only external request the app makes is loading the Cairo and Inter fonts from Google Fonts (fonts.googleapis.com). Google may receive standard technical request data (such as your IP address) when these fonts are fetched, governed by Google's own privacy policy. No text you type is ever included in such requests.</p>
+      </div>
+
+      <div class="card">
+        <h2>Children's privacy</h2>
+        <p>FrancoAr does not knowingly collect any personal information from anyone, including children under 13.</p>
+      </div>
+
+      <div class="card">
+        <h2>Changes to this policy</h2>
+        <p>Any changes will be published on this page with an updated date above.</p>
+      </div>
+
+      <div class="card">
+        <h2>Contact</h2>
+        <p>Questions or requests: <strong>[your-support-email@example.com]</strong><br><em>(Developer: replace this placeholder with your real support email before publishing.)</em></p>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>Third-party services</h2>
-      <p>
-        The only external request the app makes is loading the Cairo and Inter fonts from
-        Google Fonts (fonts.googleapis.com). Google may receive standard technical request
-        data (such as your IP address) when these fonts are fetched, governed by Google's
-        own privacy policy. No text you type is ever included in such requests.
-      </p>
-    </div>
+    <!-- ═══ العربية ═══ -->
+    <div data-lang-block="ar" hidden>
+      <h1>سياسة الخصوصية</h1>
+      <p class="updated">آخر تحديث: 6 سبتمبر 2026</p>
 
-    <div class="card">
-      <h2>Children's privacy</h2>
-      <p>
-        FrancoAr does not knowingly collect any personal information from anyone,
-        including children under 13.
-      </p>
-    </div>
+      <div class="card">
+        <h2>ما هو FrancoAr؟</h2>
+        <p>FrancoAr مترجم مجاني بين الكتابة العربية والفرانكو (عربيزي) للمصريين. التطبيق يعمل بالكامل داخل متصفحك — مفيش حساب، مفيش تسجيل دخول، ومفيش سيرفر له أي دور في الترجمة.</p>
+      </div>
 
-    <div class="card">
-      <h2>Changes to this policy</h2>
-      <p>
-        Any changes will be published on this page with an updated date above.
-      </p>
-    </div>
+      <div class="card">
+        <h2>جمع البيانات</h2>
+        <p><strong>إحنا مش بنجمع ولا ننقل ولا نخزن أي بيانات خاصة بيك على أي سيرفر.</strong></p>
+        <ul>
+          <li><strong>النص اللي بتكتبه عمري ما بيسيب جهازك.</strong> الترجمة كلها بتتم محليًا جوه المتصفح على جهازك.</li>
+          <li><strong>التفضيلات المحلية:</strong> الثيم ( الغامق/الفاتح) ولغة الواجهة وآخر الترجمات بتتخزن في localStorage على جهازك فقط، ومش بتتبعت لأي مكان أبدًا. تقدر تمسحها في أي وقت من زرار «مسح السجل» أو من إعدادات المتصفح.</li>
+          <li><strong>مفيش تحليلات:</strong> بنستخدمش أي أدوات تحليل أو تتبع أو إعلانات.</li>
+          <li><strong>مفيش مشاركة بيانات:</strong> بنشاركش أو نبيع أو ننقل أي معلومات لأي طرف تالت.</li>
+          <li><strong>الحافظة:</strong> التطبيق بيقرأ أو يكتب في الحافظة بس لما تدوس على زرار «نسخ» أو «لصق».</li>
+        </ul>
+      </div>
 
-    <div class="card">
-      <h2>Contact</h2>
-      <p>
-        Questions or requests: <strong>[shehabtito4030@gmail.com]</strong>
-        <br><em>(Developer: replace this placeholder with your real support email before publishing.)</em>
-      </p>
-    </div>
+      <div class="card">
+        <h2>الخدمات الخارجية</h2>
+        <p>الطلب الخارجي الوحيد اللي بيعمله التطبيق هو تحميل خطي Cairo وInter من Google Fonts (fonts.googleapis.com). جوجل ممكن تتلقى بيانات فنية قياسية (زي عنوان الـ IP) وقت تحميل الخطوط، وده خاضع لسياسة الخصوصية بتاعة جوجل نفسها. النص اللي بتكتبه عمري ما بيكون جزء من الطلبات دي.</p>
+      </div>
 
-    <div class="card ar">
-      <h2>سياسة الخصوصية (ملخص بالعربي)</h2>
-      <p>
-        ترجمة FrancoAr تحدث بالكامل على جهازك داخل المتصفح — نصك مش بيتبعث لأي سيرفر ولا بيتخزن عنده.
-        البيانات المحفوظة (الثيم، اللغة، آخر الترجمات) بتتخزن على جهازك فقط في localStorage ويمكن مسحها في أي وقت.
-        مفيش إعلانات، مفيش تتبع، ومفيش مشاركة بيانات مع أي طرف تالت. الخدمة الخارجية الوحيدة هي تحميل الخطوط من Google Fonts.
-      </p>
+      <div class="card">
+        <h2>خصوصية الأطفال</h2>
+        <p>FrancoAr مش بيجمع عمدًا أي معلومات شخصية من أي شخص، ومن ضمنهم الأطفال تحت 13 سنة.</p>
+      </div>
+
+      <div class="card">
+        <h2>التغييرات على هذه السياسة</h2>
+        <p>أي تغييرات هتنزل على الصفحة دي مع تحديث التاريخ اللي فوق.</p>
+      </div>
+
+      <div class="card">
+        <h2>التواصل</h2>
+        <p>للاستفسارات أو الطلبات: <strong>[your-support-email@example.com]</strong><br><em>(المطور: استبدل هذا البريد الإلكتروني المؤقت ببريدك الحقيقي قبل النشر.)</em></p>
+      </div>
     </div>
 
     <footer>FrancoAr — Egyptian Franco &harr; Arabic Translator</footer>
   </div>
+
+  <script>
+    (function () {
+      var KEY = "franco-lang"; // same storage key as the main site
+
+      function storedLang() {
+        try { return localStorage.getItem(KEY); } catch (e) { return null; }
+      }
+
+      // Same resolution order as the main site: ?lang= param first, then the
+      // saved preference, then English.
+      var params = new URLSearchParams(window.location.search);
+      var q = params.get("lang");
+      var lang = (q === "en" || q === "ar")
+        ? q
+        : (storedLang() === "ar" ? "ar" : "en");
+
+      function apply(current) {
+        document.documentElement.lang = current;
+        document.documentElement.dir = current === "ar" ? "rtl" : "ltr";
+        document.title = current === "ar"
+          ? "FrancoAr — سياسة الخصوصية"
+          : "FrancoAr — Privacy Policy";
+        var blocks = document.querySelectorAll("[data-lang-block]");
+        for (var i = 0; i < blocks.length; i++) {
+          blocks[i].hidden = blocks[i].getAttribute("data-lang-block") !== current;
+        }
+        document.getElementById("langToggle").textContent =
+          current === "en" ? "عربي" : "English";
+        var back = document.querySelector("[data-i18n='back']");
+        if (back) back.textContent = current === "ar" ? "رجوع إلى FrancoAr" : "Back to FrancoAr";
+      }
+
+      document.getElementById("langToggle").addEventListener("click", function () {
+        lang = lang === "en" ? "ar" : "en";
+        try { localStorage.setItem(KEY, lang); } catch (e) { /* private mode */ }
+        apply(lang);
+      });
+
+      apply(lang);
+    })();
+  </script>
 </body>
 </html>
