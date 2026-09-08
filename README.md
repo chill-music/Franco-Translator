@@ -20,7 +20,7 @@
 
 ## 🔗 Live Demo
 
-Visit the live app: **[francoar.github.io](https://francoar.github.io/)**
+Visit the live app: **[francoar.github.io]([https://francoar.github.io/](https://chill-music.github.io/Franco-Translator/))**
 
 ## 🚀 How to Run Locally
 
