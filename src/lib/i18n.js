@@ -5,9 +5,9 @@
 export const uiStrings = {
   en: {
     appTitle: "Franco Translator",
-    heroTitle: "Egyptian Arabic ↔ Franco",
+    heroTitle: "Free Franco Arabic Translator",
     heroSub:
-      "Translate between Egyptian Arabic and Franco-Arabic (Arabizi) instantly and accurately.",
+      "Convert Franco to Arabic online — and Arabic to Franco — instantly. The free Arabizi translator made for Egyptian Arabic.",
     btnTranslate: "Translate",
     btnSwap: "Swap",
     btnCopy: "Copy",
@@ -68,8 +68,8 @@ export const uiStrings = {
   },
   ar: {
     appTitle: "مترجم الفرانكو",
-    heroTitle: "عربي مصري ↔ فرانكو",
-    heroSub: "ترجم بين العربي المصري والفرانكو فورياً وبدقة.",
+    heroTitle: "مترجم فرانكو عربي مجاني",
+    heroSub: "حوّل الفرنكو لعربي والعربي لفرانكو فوراً — مترجم فرانكو عربي مجاني مصمم للمصريين.",
     btnTranslate: "ترجم",
     btnSwap: "تبديل",
     btnCopy: "نسخ",
