@@ -181,7 +181,10 @@ export const francoToArDict = {
 
 export const arToFrancoDict = {
   // High-frequency words added for engine quality + verification sentences
-  "الله":"allah","النهاردة":"elnaharda","المدرسة":"elmadrasa","الصبح":"elsob7","بدري":"badri",
+  "الله":"allah","دهب":"dahab","ربنا":"rabbena","فرحة":"far7a","مفيش":"mafiesh",
+  "هنا":"hena","سؤال":"su2al","قول":"2oul","بيئة":"bay2a","عسل":"3asal",
+  "كويس":"kwayes","بكرة":"bokra","أحمد":"a7med","ظلم":"zolm",
+  "النهاردة":"elnaharda","المدرسة":"elmadrasa","الصبح":"elsob7","بدري":"badri",
   "أروح":"aroo7","بيحصل":"byehsal","خالص":"khales","جزيلاً":"gazilan","جزيلا":"gazilan",
   "المساعدة":"elmosa3ada","محمّد":"mo7ammad","راجل":"ragel","ثلاثة":"talata",
   "المكتب":"elmaktab","وربنا يخليك":"we rabbina yekhalleek","الكتاب":"elkiteb",
@@ -205,7 +208,7 @@ export const arToFrancoDict = {
   "أيوا":"aywa","آه":"ah","نعم":"na3am","لأ":"la2","لا":"la",
   "أوكى":"ok","يلا":"yalla","بس":"bass","كده":"keda",
   "خلاص":"5alas","تمام":"tamam","معليش":"ma3lesh",
-  "أكيد":"akeed","طبعاً":"tab3an","صح":"sa7",
+  "أكيد":"akeed","طبعاً":"tab3an",
   "مش":"mesh","لأن":"la2en","لكن":"laken",
   "بلاش":"balaash","عادي":"3adi","ممكن":"momken","لازم":"lazim",
   "برضو":"bardoo","كمان":"kaman","تاني":"tani",
@@ -242,7 +245,7 @@ export const arToFrancoDict = {
   "قل":"2ol","قلت":"2olt","قلتي":"2olti",
   "يقول":"ye2ol","بيقول":"bye2ol",
   "جاب":"gab","جبت":"gabt","يجيب":"yegib","بيجيب":"byegib",
-  "خد":"5ad","خدت":"5adt","يخد":"ye5od","بيخد":"bye5od","بخد":"ba5od",
+  "خد":"5od","خدت":"5odt","يخد":"ye5od","بيخد":"bye5od","بخد":"ba5od",
   "خليني":"5allini","خليك":"5alleek","خلينا":"5alina","خليه":"5alih","خليها":"5aliha",
   "إبقى":"eb2a","طلع":"etla3","طلعت":"etla3t",
   "نازل":"nazel","نازلة":"nazla",
@@ -270,7 +273,7 @@ export const arToFrancoDict = {
   "غلبان":"ghalban","غلبانة":"ghalbana",
   "مبسوط":"mabsout","مبسوطة":"mabsoota","ضعيف":"za3ef",
   "أوي":"awi","أهل":"ahl","أولاد":"awlad","بنات":"banat",
-  "جامد":"gamed","صحيح":"sahi7","غلط":"ghalat","غلطان":"ghalitan",
+  "جامد":"gamed","صح":"9a7","صحيح":"sahi7","غلط":"ghalat","غلطان":"ghalitan",
   "حقيقي":"7a2i2i",
   "واحد":"wa7ed","واحدة":"wa7da","اتنين":"etneen","تلاتة":"talata",
   "أربعة":"arba3a","خمسة":"5amsa","ستة":"sitta","سبعة":"sab3a",
