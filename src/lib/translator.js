@@ -266,7 +266,14 @@ function smartTransliterateWord(word) {
           result += "w";
         }
       } else if (prev && isArConsonant(prev)) {
-        // و after a consonant
+        // و after a consonant — insert a vowel before it if we just emitted
+        // a Franco consonant (جواز→gawaz, not gwaz), matching the same rule
+        // now applied to plain consonants above.
+        const prevOutputW = result.slice(-1);
+        const francoConsonantsW = /[btfkdrlmnszghq2345679']/i;
+        if (prevOutputW && francoConsonantsW.test(prevOutputW)) {
+          result += "a";
+        }
         if (next && (next === "ا" || next === "ي")) {
           // و before a long vowel → "w" (موقع→maw2i3)
           result += "w";
@@ -332,8 +339,11 @@ function smartTransliterateWord(word) {
       const francoConsonants = /[btfkdrlmnszghq2345679']/i;
       // Also check multi-char ending like 'sh' — last char 'h' is consonant
       const isPrevConsonant = prevOutput && francoConsonants.test(prevOutput);
-      // FIX 3: never insert a vowel before a word-final consonant.
-      const isFinalLetter = i === len - 1;
+      // FIX 3 (revised): Arabic words essentially never end in two bare
+      // consonants with no vowel between them (دهب→dahab, سفر→safar are the
+      // norm, not the exception), so we DO insert a vowel before a
+      // word-final consonant too, same as anywhere else. The old
+      // "isFinalLetter" exception has been removed — it was backwards.
 
       // Apply consonant mapping
       let mapped = false;
@@ -342,7 +352,7 @@ function smartTransliterateWord(word) {
           // FIX 4: a doubled consonant (shadda pair) stays adjacent — if the
           // mapped symbol equals what we just emitted, do not insert a vowel.
           const isDoubled = result.endsWith(replacement);
-          if (isPrevConsonant && !isFinalLetter && !isDoubled) {
+          if (isPrevConsonant && !isDoubled) {
             result += "a";
           }
           result += replacement;
@@ -352,7 +362,7 @@ function smartTransliterateWord(word) {
       }
 
       if (!mapped) {
-        if (isPrevConsonant && !isFinalLetter) {
+        if (isPrevConsonant) {
           result += "a";
         }
         result += ch;

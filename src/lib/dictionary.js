@@ -177,6 +177,7 @@ export const francoToArDict = {
   "bafakir":"بفكر","bafakkir":"بفكر",
   "law samaht":"لو سمحت",
   "3omri":"عمري","3omry":"عمري","3omrak":"عمرك",
+  "gawaz":"جواز","safar":"سفر","gawaz safar":"جواز سفر","masr":"مصر",
 };
 
 export const arToFrancoDict = {
@@ -189,6 +190,8 @@ export const arToFrancoDict = {
   "شارع":"share3","مستشفى":"mostashfa","صيدلية":"saydaliya","مطعم":"mat3am","ملابس":"malabis","كرسي":"korsi",
   "سرير":"sirir","شباك":"shebbak","محمول":"ma7moul","شبكة":"shabaka","صورة":"soora","محطة":"ma7atta",
   "مطار":"matar","رسالة":"risala","إجابة":"egaba","امتحان":"emte7an","درس":"dars","واجب":"wageb",
+  "جواز":"gawaz","سفر":"safar","جواز سفر":"gawaz safar","مصر":"masr",
+  "شمس":"shams","بحر":"ba7r","نهر":"nahr","أرض":"ard","شرق":"shar2","غرب":"gharb",
   "جملة":"gamla","صفحة":"saf7a","لعبة":"le3ba","فريق":"fari2","هدف":"hadaf","نتيجة":"natiga",
   "مدينة":"madina","قرية":"2arya","ميدان":"midan","سوق":"sou2","جنيه":"geneh","فاتورة":"fatoura",
   "حساب":"7esab","رقم":"ra2m","وظيفة":"wazifa","مرتب":"morattab","مقابلة":"mo2abla","اجتماع":"egtima3",
