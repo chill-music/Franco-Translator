@@ -12,10 +12,10 @@ const GUIDE_NUMBERS = [
   ["2", "ء / أ / إ / ق", "Hamza / Qaf"],
   ["3", "ع", "Ayn"],
   ["3'", "غ", "Ghayn (or gh)"],
-  ["5", "خ", "Kha (or kh)"],
+  ["5", "خ", "Kha (or kh / 7')"],
   ["6", "ط", "Emphatic Ta"],
   ["7", "ح", "Pharyngeal Ha"],
-  ["8", "غ / ق", "Less common"],
+  ["8", "غ", "Alternate for ghayn (input only)"],
   ["9", "ص", "Emphatic Sad"],
 ];
 

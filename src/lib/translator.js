@@ -161,9 +161,10 @@ export function translateFrancoToArabic(text) {
  * Process remaining Franco text token-by-token with dictionary lookup and character mapping.
  */
 function processRemainingFranco(text) {
-  const tokens = text.split(/(\s+|[.,!؟?؛;:'"()\-])/);
+  // NOTE: apostrophes are NOT separators — they are part of Franco tokens (7', 3'ا)
+  const tokens = text.split(/(\s+|[.,!؟?؛;"()\-])/);
   const result = tokens.map((token) => {
-    if (/^\s+$/.test(token) || /^[.,!؟?؛;:'"()\-]+$/.test(token)) return token;
+    if (/^\s+$/.test(token) || /^[.,!؟?؛;"()\-]+$/.test(token)) return token;
     if (/[\u0600-\u06FF]/.test(token)) return token; // Already Arabic
     const lower = token.toLowerCase().replace(/[^a-z0-9']/g, "");
     if (!lower) return token;
@@ -232,14 +233,13 @@ function smartTransliterateWord(word) {
         // ي before a consonant → consonant "y" + default vowel
         // (هيجي→hayigi, يوم→youm, بيقول→bye2ol)
         result += "y";
-        // Insert default vowel after y if next is consonant
-        // The "a" or "i" depends on context, default to "i" after y
+        // FIX 5: default to "e" after y (بيحصل→byehsal); "i" was too often wrong.
         const nextNext = i + 2 < len ? word[i + 2] : "";
         if (nextNext && isArVowel(nextNext)) {
           // There's a vowel coming after the consonant, just add y
           // The vowel will be handled when we get to it
         } else {
-          result += "i";
+          result += "e";
         }
       } else if (next === "ا" || next === "و") {
         // ي before long vowel → "y" consonant (يوم→youm, يعني→ya3ni)
@@ -332,13 +332,17 @@ function smartTransliterateWord(word) {
       const francoConsonants = /[btfkdrlmnszghq2345679']/i;
       // Also check multi-char ending like 'sh' — last char 'h' is consonant
       const isPrevConsonant = prevOutput && francoConsonants.test(prevOutput);
+      // FIX 3: never insert a vowel before a word-final consonant.
+      const isFinalLetter = i === len - 1;
 
       // Apply consonant mapping
       let mapped = false;
       for (const [regex, replacement] of arToFrancoMap) {
         if (regex.test(ch)) {
-          // Insert vowel "a" between adjacent consonants
-          if (isPrevConsonant) {
+          // FIX 4: a doubled consonant (shadda pair) stays adjacent — if the
+          // mapped symbol equals what we just emitted, do not insert a vowel.
+          const isDoubled = result.endsWith(replacement);
+          if (isPrevConsonant && !isFinalLetter && !isDoubled) {
             result += "a";
           }
           result += replacement;
@@ -348,7 +352,7 @@ function smartTransliterateWord(word) {
       }
 
       if (!mapped) {
-        if (isPrevConsonant) {
+        if (isPrevConsonant && !isFinalLetter) {
           result += "a";
         }
         result += ch;
@@ -366,26 +370,62 @@ function smartTransliterateWord(word) {
 }
 
 /**
+ * Check whether a character is an Arabic letter (used for word boundaries).
+ */
+function isArabicLetter(ch) {
+  return /[\u0621-\u064A]/.test(ch);
+}
+
+/**
+ * Replace whole-word / whole-phrase occurrences only (FIX 1).
+ * A match counts only when it starts and ends at a word boundary, i.e. it is
+ * preceded/followed by a non-Arabic-letter character (or the string edge).
+ * This prevents short keys like "لا" from being replaced inside words such as
+ * "ثلاثة" (which previously produced garbled output like "sla2sa").
+ */
+function replaceAtWordBoundaries(text, phrase, replacement) {
+  let out = "";
+  let i = 0;
+  let idx = text.indexOf(phrase, i);
+  while (idx !== -1) {
+    const before = idx > 0 ? text[idx - 1] : null;
+    const after = idx + phrase.length < text.length ? text[idx + phrase.length] : null;
+    const okBefore = before === null || !isArabicLetter(before);
+    const okAfter = after === null || !isArabicLetter(after);
+    if (okBefore && okAfter) {
+      out += text.slice(i, idx) + replacement;
+      i = idx + phrase.length;
+    } else {
+      out += text.slice(i, idx + phrase.length);
+      i = idx + phrase.length;
+    }
+    idx = text.indexOf(phrase, i);
+  }
+  out += text.slice(i);
+  return out;
+}
+
+/**
  * Translate Arabic text to Franco using the smart engine.
  */
 export function translateArabicToFranco(text) {
   // Step 1: Normalize Arabic (remove diacritics, handle shadda, normalize alif)
   let normalized = normalizeArabic(text);
 
-  // Step 2: Dictionary phrase replacement (longest first, literal split/join)
+  // Step 2: Dictionary phrase replacement (longest first), word-boundary aware.
   // Uses arLookupDict which includes normalized forms for diacritic-free matching
   for (const phrase of allArLookupPhrases) {
     if (normalized.includes(phrase)) {
-      normalized = normalized.split(phrase).join(arLookupDict[phrase]);
+      normalized = replaceAtWordBoundaries(normalized, phrase, arLookupDict[phrase]);
     }
   }
 
   // Step 3: Split into tokens and process each
   // We need to identify which parts are still Arabic (need transliteration)
   // and which have already been converted by the dictionary
-  const tokens = normalized.split(/(\s+|[.,!؟?؛;:'"()\-])/);
+  const tokens = normalized.split(/(\s+|[.,!؟?؛;"()\-])/);
   const result = tokens.map((token) => {
-    if (/^\s+$/.test(token) || /^[.,!؟?؛;:'"()\-]+$/.test(token)) return token;
+    if (/^\s+$/.test(token) || /^[.,!؟?؛;"()\-]+$/.test(token)) return token;
     if (!token) return token;
 
     // Check if this token still contains Arabic characters
@@ -408,10 +448,25 @@ function splitAndTransliterate(token) {
   const parts = token.split(/([\u0600-\u06FF]+)/);
   return parts.map((part) => {
     if (/[\u0600-\u06FF]/.test(part)) {
-      return smartTransliterateWord(part);
+      return transliterateArabicWord(part);
     }
     return part;
   }).join("");
+}
+
+/**
+ * Transliterate one Arabic word, handling the definite article (FIX 2).
+ * "ال" + word -> "el" + word ("elmadrasa", Egyptian convention), and the rest
+ * still benefits from dictionary lookup inside smartTransliterateWord.
+ */
+function transliterateArabicWord(word) {
+  // A full-word dictionary hit always wins (covers words like "الله" that
+  // merely start with the letters ال).
+  if (arLookupDict[word]) return arLookupDict[word];
+  if (word.length > 2 && word.startsWith("ال")) {
+    return "el" + smartTransliterateWord(word.slice(2));
+  }
+  return smartTransliterateWord(word);
 }
 
 // ═══════════════════════════════════════════════════════════════

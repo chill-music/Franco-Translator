@@ -32,7 +32,7 @@ export const francoToArDict = {
   "la2":"لأ","la":"لا","ok":"أوكى","oki":"أوكى",
   "yalla":"يلا","yallah":"يلا","bass":"بس","bas":"بس",
   "keda":"كده","kida":"كده",
-  "5alas":"خلاص","khales":"خلاص","5ales":"خلاص","tamam":"تمام",
+  "5alas":"خلاص","khales":"خلاص","5ales":"خلاص","7'alas":"خلص","7'ala9":"خلاص","tamam":"تمام",
   "ma3lesh":"معليش","ma3lish":"معليش","m3lsh":"معليش",
   "akeed":"أكيد","tab3an":"طبعاً","tab3n":"طبعاً",
   "sa7":"صح","so7":"صح","9a7":"صح",
@@ -99,7 +99,7 @@ export const francoToArDict = {
   "kabeer":"كبير","kbeer":"كبير","kibeer":"كبير","kabeera":"كبيرة","kibeera":"كبيرة",
   "so8ayyar":"صغير","sgheer":"صغير","sogheer":"صغير","sgheera":"صغيرة",
   "7elw":"حلو","7elwa":"حلوة","helw":"حلو","helwa":"حلوة",
-  "gameel":"جميل","gamil":"جميل","gameela":"جميلة","gamila":"جميلة",
+  "gameel":"جميل","gamil":"جميل","jameel":"جميل","jamil":"جميل","gameela":"جميلة","gamila":"جميلة",
   "we7esh":"وحش","wi7esh":"وحش","we7esha":"وحشة",
   "kteer":"كتير","ktiir":"كتير","keteer":"كتير","kteera":"كتيرة",
   "shaater":"شاطر","shaatra":"شاطرة",
@@ -180,6 +180,12 @@ export const francoToArDict = {
 };
 
 export const arToFrancoDict = {
+  // High-frequency words added for engine quality + verification sentences
+  "الله":"allah","النهاردة":"elnaharda","المدرسة":"elmadrasa","الصبح":"elsob7","بدري":"badri",
+  "أروح":"aroo7","بيحصل":"byehsal","خالص":"khales","جزيلاً":"gazilan","جزيلا":"gazilan",
+  "المساعدة":"elmosa3ada","محمّد":"mo7ammad","راجل":"ragel","ثلاثة":"talata",
+  "المكتب":"elmaktab","وربنا يخليك":"we rabbina yekhalleek","الكتاب":"elkiteb",
+  "معليش":"ma3lesh","الحمد لله":"el7amdulillah",
   "أهلاً":"ahlan","أهلاً وسهلاً":"ahlan wa sahlan","مرحباً":"mar7aba",
   "سلام":"salam","سلام عليكم":"salam 3alekom","السلام عليكم":"el salam 3alekom",
   "وعليكم السلام":"wa 3alekom el salam","عليكم السلام":"3alekom el salam",
@@ -241,7 +247,7 @@ export const arToFrancoDict = {
   "إبقى":"eb2a","طلع":"etla3","طلعت":"etla3t",
   "نازل":"nazel","نازلة":"nazla",
   "يزيد":"yezeed","بيزيد":"byezed",
-  "كتب":"katab","كتبت":"katebt","بيكتب":"byektob","يكتب":"yektob",
+  "كتب":"kotob","كتبت":"katebt","بيكتب":"byektob","يكتب":"yektob",
   "تعبان":"ta3ban","تعبانة":"ta3bana",
   "عاوز":"3awez","عاوزة":"3awza",
   "ماشي":"mashy","مشيت":"meshet","مشينا":"mashina",
@@ -328,12 +334,14 @@ export const francoToArMap = [
   [/oo|ou|ow/, "و"],
   [/5/, "خ"],
   [/6/, "ط"],
+  [/7'/, "خ"],  // FIX 8: two-char sequence must be checked before /7/
   [/7/, "ح"],
   [/9/, "ص"],
   [/8/, "غ"],  // 8 = Ghayn (less common Franco variant; see Guide),
   [/3/, "ع"],
   [/2/, "ق"],  // In Egyptian Franco, 2 primarily represents ق
   [/g/, "ج"],
+  [/j/, "ج"],  // FIX 9: alternate input for ج (g remains the output convention)
   [/a/, "ا"],
   [/e/, "ي"],
   [/i/, "ي"],
